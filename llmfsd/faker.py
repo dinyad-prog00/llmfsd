@@ -158,7 +158,7 @@ class Faker:
         if ext not in {".json", ".csv"}:
             raise ValueError("Unsupported file format. Use '.json' or '.csv'.")
 
-        if ext != format:
+        if ext != f".{format}":
             warnings.warn(
                 f"You are using {ext} instead of {format}!", category=UserWarning
             )
