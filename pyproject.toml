@@ -1,0 +1,29 @@
+[tool.poetry]
+authors = ["Donatien YETO <donatien.yeto@dinyad.fr>"]
+description = ""
+name = "llmfsd"
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+aisuite = "^0.1.6"
+python = "^3.10"
+python-dotenv = "^1.0.1"
+mistralai = { version = "^1.2.3", optional = true }
+
+[tool.poetry.extras]
+# Define extras that map to aisuite's optional packages
+all = ["anthropic", "aws", "google", "groq", "mistral", "openai"]
+anthropic = ["anthropic"]
+aws = ["boto3"]
+azure = []
+google = ["vertexai"]
+groq = ["groq"]
+huggingface = []
+mistral = ["mistralai"]
+ollama = []
+openai = ["openai"]
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]

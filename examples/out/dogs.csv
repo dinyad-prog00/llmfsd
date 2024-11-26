@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Alice Johnson",
+        "age": 34,
+        "country": "USA"
+    },
+    {
+        "name": "Bob Smith",
+        "age": 28,
+        "country": "Canada"
+    },
+    {
+        "name": "Charlie Brown",
+        "age": 45,
+        "country": "UK"
+    }
+]
