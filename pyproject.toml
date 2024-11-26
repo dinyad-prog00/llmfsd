@@ -26,6 +26,9 @@ groq = ["groq"]
 mistral = ["mistralai"]
 openai = ["openai"]
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+
 [build-system]
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
