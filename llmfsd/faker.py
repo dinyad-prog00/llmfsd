@@ -30,6 +30,7 @@ class Faker:
 
         self.prompt = PromptTemplate()
         self.parser = OuputParser()
+        self.cc = "hi"
 
     def json(self, query: str, output: Optional[str] = None) -> Optional[list[dict]]:
         """
@@ -39,7 +40,7 @@ class Faker:
         :param output: File path to save the output. If None, return the JSON object.
         :return: A JSON object (list of dictionaries) or None if saved to a file.
         """
-        response = self.__create_completions("json", query)
+        response = self._create_completions("json", query)
         # Ensure the response is valid JSON
         try:
             data = json.loads(response)
@@ -48,7 +49,7 @@ class Faker:
 
             # Save to file if output is provided
             if output:
-                self.__save_to_file(json.dumps(data, indent=4), "json", output)
+                self._save_to_file(json.dumps(data, indent=4), "json", output)
                 return None
             return data
         except json.JSONDecodeError:
@@ -62,7 +63,7 @@ class Faker:
         :param output: File path to save the output. If None, return the CSV string.
         :return: A CSV string (text) or None if saved to a file.
         """
-        response = self.__create_completions("csv", query)
+        response = self._create_completions("csv", query)
 
         # Validate the response as a CSV string
         try:
@@ -77,13 +78,13 @@ class Faker:
 
             # Save to file if output is provided
             if output:
-                self.__save_to_file(response, "csv", output)
+                self._save_to_file(response, "csv", output)
                 return None
             return response
         except Exception as e:
             raise e
 
-    def __create_completions(self, format: str, query: str):
+    def _create_completions(self, format: str, query: str):
         """
         Generate a response from the LLM based on the query.
 
@@ -91,7 +92,7 @@ class Faker:
         :param query: The SQL query.
         """
         # Preprocess the query
-        query, descriptions = self.__process_query(query)
+        query, descriptions = self._process_query(query)
 
         # Generate messages for the prompt
         messages = self.prompt.get_messages(format, query, descriptions)
@@ -104,7 +105,7 @@ class Faker:
         # Parse and return the response
         return self.parser.parse(response)
 
-    def __process_query(self, query: str) -> tuple[str, Dict[str, str]]:
+    def _process_query(self, query: str) -> tuple[str, Dict[str, str]]:
         """
         Preprocess the SQL query to handle attribute extraction and descriptions.
 
@@ -112,7 +113,7 @@ class Faker:
         :return: The modified query and attribute descriptions.
         """
         # Extract table name from the query
-        table_name = self.__extract_table_name(query)
+        table_name = self._extract_table_name(query)
 
         descriptions = {}
         # If the table exists in data_models
@@ -129,7 +130,7 @@ class Faker:
 
         return query, descriptions
 
-    def __extract_table_name(self, query: str) -> str:
+    def _extract_table_name(self, query: str) -> str:
         """
         Extract the table name from the SQL query.
 
@@ -142,7 +143,7 @@ class Faker:
             return lower_query.split("from")[1].split()[0].strip(";")
         raise ValueError("Invalid query: 'FROM' clause is missing.")
 
-    def __save_to_file(self, data: str, format: str, path: str):
+    def _save_to_file(self, data: str, format: str, path: str):
         """
         Save data directly to a file without validation.
 
