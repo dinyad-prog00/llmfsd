@@ -5,6 +5,7 @@
 ## Features
 - Generate fake structured data via SQL queries.
 - Supports JSON and CSV output formats.
+- Language selection for descriptive attributes.
 - Define custom data models to control schema and descriptions.
 - Integrates with various AI providers (e.g., OpenAI, Mistral, Google, Anthropic).
 
@@ -42,8 +43,11 @@ Here’s a simple example to get started:
 ```python
 from llmfsd import Faker
 
-# Initialize Faker with your LLM model_id (aisuite id format)
+# Initialize Faker with your LLM model ID (AISuite ID format)
 faker = Faker(model_id="mistral:mistral-large-latest")
+
+# Or specify a language for descriptive attributes. Defaults to English.
+faker = Faker(model_id="mistral:mistral-large-latest", lang="french")
 
 # Generate JSON data
 print(faker.json("SELECT uuid, name FROM phone_brands LIMIT 4"))

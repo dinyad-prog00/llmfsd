@@ -12,12 +12,18 @@ from .prompt import PromptTemplate
 
 
 class Faker:
-    def __init__(self, model_id: str, data_models: Optional[List[DataModel]] = None):
+    def __init__(
+        self,
+        model_id: str,
+        data_models: Optional[List[DataModel]] = None,
+        lang="english",
+    ):
         """
         Initialize the Faker class.
 
         :param model_id: The ID of the language model to use for data generation (aisuite format).
         :param data_models: A list of DataModel instances to define schemas for tables.
+        :param lang: Language for descriptive attributes
         """
         self.model_id = model_id
         self._client = ai.Client()
@@ -28,7 +34,7 @@ class Faker:
             for model in data_models:
                 self.data_models[model.name] = model
 
-        self.prompt = PromptTemplate()
+        self.prompt = PromptTemplate(lang)
         self.parser = OuputParser()
         self.cc = "hi"
 

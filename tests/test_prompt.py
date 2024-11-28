@@ -5,7 +5,7 @@ from llmfsd.prompt import PromptTemplate
 
 class TestPromptTemplate(unittest.TestCase):
     def setUp(self):
-        self.prompt_template = PromptTemplate()
+        self.prompt_template = PromptTemplate(lang="french")
 
     def test_get_messages_with_descriptions(self):
         format = "json"
@@ -13,12 +13,16 @@ class TestPromptTemplate(unittest.TestCase):
         descriptions = {"age": "Age of the user"}
 
         messages = self.prompt_template.get_messages(format, query, descriptions)
-        
+
         expected_system_content = (
-            self.prompt_template.system_prompt.format(format=format)
+            self.prompt_template.system_prompt.format(
+                format=format, lang=self.prompt_template.lang
+            )
             + "\nDescriptions:\nage: Age of the user"
         )
-        expected_user_content =  self.prompt_template.user_prompt.format(format=format,query=query)
+        expected_user_content = self.prompt_template.user_prompt.format(
+            format=format, query=query
+        )
 
         self.assertEqual(len(messages), 2)
         self.assertEqual(messages[0]["content"], expected_system_content)
@@ -30,13 +34,18 @@ class TestPromptTemplate(unittest.TestCase):
 
         messages = self.prompt_template.get_messages(format, query, descriptions={})
 
-        expected_system_content = self.prompt_template.system_prompt.format(format=format)
+        expected_system_content = self.prompt_template.system_prompt.format(
+            format=format, lang=self.prompt_template.lang
+        )
 
-        expected_user_content = self.prompt_template.user_prompt.format(format=format,query=query)
+        expected_user_content = self.prompt_template.user_prompt.format(
+            format=format, query=query
+        )
 
         self.assertEqual(len(messages), 2)
         self.assertEqual(messages[0]["content"], expected_system_content)
         self.assertEqual(messages[1]["content"], expected_user_content)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

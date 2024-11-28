@@ -7,10 +7,10 @@ sys.path.append("../llmfsd")
 
 from llmfsd import Faker
 
-faker = Faker(model_id="mistral:mistral-large-latest")
+faker = Faker(model_id="mistral:mistral-large-latest", lang="chinois")
 
 
-print(faker.json("select uuid, name from phone_brands limit 4"))
+print(faker.json("select name, description from phone_brands limit 4"))
 
 """
  output:
@@ -19,7 +19,7 @@ print(faker.json("select uuid, name from phone_brands limit 4"))
 """
 
 
-print(faker.csv("select id, color from colors limit 2"))
+#print(faker.csv("select id, color from colors limit 2"))
 
 """
 output:

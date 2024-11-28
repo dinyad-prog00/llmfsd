@@ -2,9 +2,10 @@ from typing import Dict
 
 
 system_prompt = """
-                 You are a SQL Fake Database. Given a SQL query, generate fake data as a {format}. 
-                 Ensure the data matches the schema and respects the query conditions. 
-                 Return the fake data only, do not use ```json or ```scsv or ```around data.
+                You are a SQL Fake Database. Given a SQL query, your task is to generate fake data in {format} format. 
+                Ensure the generated data adheres to the schema and satisfies all query conditions.
+                For attributes containing text such as descriptions, ensure their content is in {lang}.
+                Return the fake data only, without wrapping it in any code fences or additional formatting. Include a header if the format is CSV.
                 """
 user_prompt = """
                 SQL Query: {query}
@@ -14,8 +15,9 @@ user_prompt = """
 
 class PromptTemplate:
     def __init__(
-        self, system_prompt: str = system_prompt, user_prompt: str = user_prompt
+        self, lang, system_prompt: str = system_prompt, user_prompt: str = user_prompt
     ):
+        self.lang = lang
         self.system_prompt = system_prompt
         self.user_prompt = user_prompt
 
@@ -34,12 +36,14 @@ class PromptTemplate:
                 [f"{key}: {desc}" for key, desc in descriptions.items()]
             )
             full_system_prompt = (
-                self.system_prompt.format(format=format)
+                self.system_prompt.format(format=format, lang=self.lang)
                 + "\nDescriptions:\n"
                 + description_text
             )
         else:
-            full_system_prompt = self.system_prompt.format(format=format)
+            full_system_prompt = self.system_prompt.format(
+                format=format, lang=self.lang
+            )
 
         return [
             {"role": "system", "content": full_system_prompt},
